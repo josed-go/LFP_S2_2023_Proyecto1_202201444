@@ -1,9 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, filedialog, messagebox
 import tkinter.font as font
+import json
 
 class app:
     def __init__(self, raiz):
+        self.archivo = ""
+
         self.raiz = raiz
         self.cantidad_lineas = 1
         self.raiz.config(bg="#fdf9c4")
@@ -43,9 +46,9 @@ class app:
 
 
         self.opciones_menu = tk.Menu(self.menu, tearoff=0, background='#fdf9c4')
-        self.opciones_menu.add_command(label="Abrir", background='#fdf9c4')
-        self.opciones_menu.add_command(label="Guardar", background='#fdf9c4')
-        self.opciones_menu.add_command(label="Guardar como", background='#fdf9c4')
+        self.opciones_menu.add_command(label="Abrir", background='#fdf9c4', command = self.abrir_archivo)
+        self.opciones_menu.add_command(label="Guardar", background='#fdf9c4', command = self.guardar_archivo)
+        self.opciones_menu.add_command(label="Guardar como", background='#fdf9c4', command = self.guardar_como)
         self.opciones_menu.add_separator(background='#fdf9c4')
         self.opciones_menu.add_command(label="Salir", background='#fdf9c4', command=self.raiz.quit)
 
@@ -85,6 +88,30 @@ class app:
             self.lineas_bar.config(state = tk.DISABLED)
             self.cantidad_lineas = cantidad
 
+    def abrir_archivo(self):
+        self.archivo = filedialog.askopenfilename(filetypes=[("Archivo JSON", "*.json")])
+        if self.archivo:
+            with open(self.archivo, 'r') as file:
+                datos_json = json.load(file)
+                self.editor.delete("1.0", tk.END)
+                self.editor.insert("1.0", json.dumps(datos_json, indent=4))
+
+    def guardar_archivo(self):
+        if self.editor and self.archivo:
+            try:
+                with open(self.archivo, 'w') as file:
+                    file.write(self.editor.get("1.0", tk.END))
+                messagebox.showinfo("Exito!", "El archivo se ha guardado correctamente")
+            except Exception as e:
+                messagebox.showinfo("Error!", "Error al guardar el archivo "+ str(e))
+
+    def guardar_como(self):
+        if self.editor:
+            self.archivo = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Archivo JSON", "*.json")])
+            if self.archivo:
+                with open(self.archivo, "w") as file:
+                    file.write(self.editor.get("1.0", tk.END))
+            messagebox.showinfo("Exito!", "El archivo se ha guardado correctamente")
 
 raiz = tk.Tk()
 ventana = app(raiz)
