@@ -24,10 +24,10 @@ class app:
         self.editor_frame.pack()
         self.editor_frame.config(width="1350", height="800", bg="#fdf9c4")
 
-        self.editor = tk.Text(self.editor_frame, width="140", height="39", padx=20, pady=20, font=('Arial', 12))
+        self.editor = tk.Text(self.editor_frame, width="140", height="39", padx=35, pady=20, font=('Arial', 12))
         self.editor.grid(row=0, column=0, padx=10, pady=25)
 
-        self.lineas_bar = tk.Text(self.editor_frame, width=3, padx=4, takefocus=0, border=0, background='lightgrey', state='disabled')
+        self.lineas_bar = tk.Text(self.editor_frame, width=3, padx=4, pady=20, takefocus=0, border=0, background='lightgrey', state='disabled', font=('Arial', 12))
         self.lineas_bar.tag_configure("center", justify="center")
         self.lineas_bar.tag_add("center", "1.0", "end")
         self.lineas_bar.grid(row=0, column=0, pady=25, sticky="nsw")
