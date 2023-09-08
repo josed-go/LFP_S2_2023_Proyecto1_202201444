@@ -95,6 +95,7 @@ class app:
                 datos_json = json.load(file)
                 self.editor.delete("1.0", tk.END)
                 self.editor.insert("1.0", json.dumps(datos_json, indent=4))
+            self.actualizar_lineas()
 
     def guardar_archivo(self):
         if self.editor and self.archivo:
