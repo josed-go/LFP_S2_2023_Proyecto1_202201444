@@ -3,9 +3,14 @@ from tkinter import ttk, filedialog, messagebox
 import tkinter.font as font
 import json
 
+from analizador import analizador
+
 class app:
     def __init__(self, raiz):
         self.archivo = ""
+        self.datos_json = ""
+
+        self.analizador = analizador()
 
         self.raiz = raiz
         self.cantidad_lineas = 1
@@ -56,7 +61,7 @@ class app:
 
         self.fuente = font.Font(weight="bold")
 
-        self.analizar_B = tk.Button(self.menu_frame, text="Analizar", padx=20, height=1, bg="#fdf9c4", activebackground="#ffda9e")
+        self.analizar_B = tk.Button(self.menu_frame, text="Analizar", padx=20, height=1, bg="#fdf9c4", activebackground="#ffda9e", command = self.analizar_datos)
         self.analizar_B.grid(row=0, column=1, padx=10, pady=10)
         self.analizar_B['font'] = self.fuente
 
@@ -92,9 +97,9 @@ class app:
         self.archivo = filedialog.askopenfilename(filetypes=[("Archivo JSON", "*.json")])
         if self.archivo:
             with open(self.archivo, 'r') as file:
-                datos_json = json.load(file)
+                self.datos_json = file.read()
                 self.editor.delete("1.0", tk.END)
-                self.editor.insert("1.0", json.dumps(datos_json, indent=4))
+                self.editor.insert("1.0", self.datos_json)
             self.actualizar_lineas()
 
     def guardar_archivo(self):
@@ -113,6 +118,11 @@ class app:
                 with open(self.archivo, "w") as file:
                     file.write(self.editor.get("1.0", tk.END))
             messagebox.showinfo("Exito!", "El archivo se ha guardado correctamente")
+
+    def analizar_datos(self):
+        self.analizador.instruccion(self.datos_json)
+        self.analizador.recursivo_operar()
+
 
 raiz = tk.Tk()
 ventana = app(raiz)
