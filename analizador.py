@@ -66,19 +66,20 @@ class analizador:
                 lexema, cadena = self.grupo_lexema(cadena[puntero:])
                 if lexema and cadena:
                     self.numero_columna += 1
-                    if lexema not in self.lexemas:
+                    """if lexema not in self.lexemas:
                         error = errores((len(self.lista_errores)+1),lexema, "Error lexico", self.numero_linea, self.numero_columna)
                         self.lista_errores.append(error)
                         self.numero_columna += len(lexema) +1
                         puntero = 0
                         cadena = self.borrar(cadena)
-                        self.lista_lexema.pop(-1)
-                    else:
-                        lex = Lexema(lexema, self.numero_linea, self.numero_columna)
+                        #self.lista_lexema.pop(-1)
+                        #self.borrar_anterior()
+                    else:"""
+                    lex = Lexema(lexema, self.numero_linea, self.numero_columna)
 
-                        self.lista_lexema.append(lex)
-                        self.numero_columna += len(lexema) + 1
-                        puntero = 0
+                    self.lista_lexema.append(lex)
+                    self.numero_columna += len(lexema) + 1
+                    puntero = 0
             elif char.isdigit():
                 token, cadena = self.numeros(cadena)
 
@@ -110,10 +111,16 @@ class analizador:
                 puntero = 0
                 self.numero_linea += 1
                 self.numero_columna = 1
+            elif char == ' ' or char == '\r' or char == '{' or char == '}' or char == ',' or char == ':' or char == '.':
+                cadena = cadena[1:]
+                self.numero_columna += 1
+                puntero = 0
             else:
                 cadena = cadena[1:]
                 puntero = 0
                 self.numero_columna += 1
+                error = errores((len(self.lista_errores)+1),char, "Error lexico", self.numero_linea, self.numero_columna)
+                self.lista_errores.append(error)
         print("--------------------")
         for error in self.lista_errores:
             print("Error encontrado: No.: {}, Lexema: {}, Tipo: {}, Fila: {}, Columna: {}".format(
@@ -123,6 +130,20 @@ class analizador:
         """for lexema in self.lista_lexema:
             print("Lexema: {}, Fila: {}, Columna: {}".format(
                 lexema.lexema, lexema.obtener_Fila(), lexema.obtener_Columna()))"""
+        
+    def borrar_anterior(self):
+        while self.lista_lexema[-1].lexema != "operacion":
+            self.lista_lexema.pop(-1)
+        """print("-1",len(self.lista_lexema)-1, "normal", len(self.lista_lexema))
+        n = len(self.lista_lexema)-1
+        while n != 1:
+            print(self.lista_lexema[n].lexema)
+        #for i in range(len(self.lista_lexema)):
+            while self.lista_lexema[n].lexema != "operacion":
+                self.lista_lexema.pop(n)
+                
+            n = n-1"""
+            
 
     def borrar(self, cadena):
         """puntero = ''
@@ -139,7 +160,7 @@ class analizador:
             char = cadena[puntero]
             puntero += 1
 
-            if char == '}' and cadena[puntero] == ',':
+            if (char == '}' and cadena[puntero] == ',') or (char == '}' and cadena[puntero] == '\n') :
                 return cadena[puntero:]
             
         return None
@@ -181,6 +202,7 @@ class analizador:
 
         while self.lista_lexema:
             lexema = self.lista_lexema.pop(0)
+
             if lexema.operar(None) == 'operacion':
                 operacion = self.lista_lexema.pop(0)
             elif lexema.operar(None) == 'valor1':
@@ -191,7 +213,7 @@ class analizador:
                 num2 = self.lista_lexema.pop(0)
                 if num2.operar(None) == '[':
                     num2 = self.operaciones()
-
+            
             if operacion and num1 and num2:
                 return operaciones_arit( num1, num2, operacion, f'Inicio: {operacion.obtener_Fila()}: {operacion.obtener_Columna()}', f'Fin: {num2.obtener_Fila()}:{num2.obtener_Columna()}')
             elif operacion and num1 and operacion.operar(None) == ('seno' or 'coseno' or 'tangente'):

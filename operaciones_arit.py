@@ -32,7 +32,7 @@ class operaciones_arit(Expression):
         elif self.tipo.operar(arbol) == 'inverso':
             return 1/valor_izq
         else:
-            return 'No salio'
+            return 'Error'
         
     def obtener_Fila(self):
         return super().obtener_Fila()
