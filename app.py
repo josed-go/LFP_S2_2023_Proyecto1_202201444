@@ -65,7 +65,7 @@ class app:
         self.analizar_B.grid(row=0, column=1, padx=10, pady=10)
         self.analizar_B['font'] = self.fuente
 
-        self.errores_B = tk.Button(self.menu_frame, text="Errores", padx=20, height=1, bg="#fdf9c4", activebackground="#ffda9e")
+        self.errores_B = tk.Button(self.menu_frame, text="Errores", padx=20, height=1, bg="#fdf9c4", activebackground="#ffda9e", command=self.errores)
         self.errores_B.grid(row=0, column=2, padx=10, pady=10)
         self.errores_B['font'] = self.fuente
 
@@ -129,6 +129,10 @@ class app:
             resultados_operaciones += str(resultado.operar(None)) + "\n"
 
         messagebox.showinfo("Resultados de operaciones", resultados_operaciones)
+
+    def errores(self):
+        nombre_archivo = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Archivo JSON", "*.json")])
+        self.analizador.generar_errores(nombre_archivo)
 
 raiz = tk.Tk()
 ventana = app(raiz)

@@ -3,6 +3,7 @@ from operaciones_trigo import *
 from lexema import *
 from numero import *
 from errores import *
+import json
 
 class analizador:
     def __init__(self):
@@ -229,3 +230,24 @@ class analizador:
                 break
 
         return self.lista_instrucciones
+    
+    def generar_errores(self, nombre_archivo):
+        datos = {}
+
+        datos["errores"] = []
+        for error in self.lista_errores:
+            datos["errores"].append({
+                "No": int(error.numero),
+                "descripcion": {
+                    "lexema": error.lexema,
+                    "tipo": error.tipo,
+                    "columna": int(error.columna),
+                    "fila": int(error.fila)
+                }
+            })
+        
+        try:
+            with open(nombre_archivo, 'w') as file:
+                json.dump(datos, file, indent = 4)
+        except Exception as e:
+            print(e)
