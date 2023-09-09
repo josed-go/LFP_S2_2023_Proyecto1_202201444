@@ -1,10 +1,11 @@
 from abstraccion import Expression
 
-class numero(Expression):
-    def __init__(self, lexema, fila, columna):
+class errores(Expression):
+    def __init__(self, numero, lexema, tipo, fila, columna):
+        self.numero = numero
         self.lexema = lexema
+        self.tipo = tipo
         super().__init__(fila, columna)
-    
 
     def operar(self, arbol):
         return self.lexema

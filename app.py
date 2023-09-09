@@ -121,8 +121,14 @@ class app:
 
     def analizar_datos(self):
         self.analizador.instruccion(self.datos_json)
-        self.analizador.recursivo_operar()
+        
+        results = self.analizador.recursivo_operar()
+        resultados_operaciones = ""
+        
+        for resultado in results:
+            resultados_operaciones += str(resultado.operar(None)) + "\n"
 
+        messagebox.showinfo("Resultados de operaciones", resultados_operaciones)
 
 raiz = tk.Tk()
 ventana = app(raiz)

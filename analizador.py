@@ -2,6 +2,7 @@ from operaciones_arit import *
 from operaciones_trigo import *
 from lexema import *
 from numero import *
+from errores import *
 
 class analizador:
     def __init__(self):
@@ -11,9 +12,11 @@ class analizador:
 
         self.lista_lexema = []
         self.lista_instrucciones = []
+        self.lista_errores = []
 
         self.palabras_reservadas = {
-            'OPERACIONES': 'operacion',
+            'OPERACIONES': 'operaciones',
+            'Operacion': 'operacion',
             'VALOR1': 'valor1',
             'VALOR2': 'valor2',
             'SUMA': 'suma',
@@ -31,6 +34,15 @@ class analizador:
             'TEXTO': 'texto',
             'FONDO': 'fondo',
             'FORMA': 'forma',
+            'TEXTO' : 'Operaciones',
+            'FONDO' : 'azul',
+            'FUENTE' :'blanco',
+            'FORMA': 'circulo',
+            'Textos' : 'textos',
+            'Fondo' : 'fondo',
+            'Fuente' : 'fuente',
+            'Forma' : 'forma',
+            'Circulo' : 'circulo',
             'COMA': ',',
             'PUNTO': '.',
             'PUNTOS': ':',
@@ -54,12 +66,19 @@ class analizador:
                 lexema, cadena = self.grupo_lexema(cadena[puntero:])
                 if lexema and cadena:
                     self.numero_columna += 1
+                    if lexema not in self.lexemas:
+                        error = errores((len(self.lista_errores)+1),lexema, "Error lexico", self.numero_linea, self.numero_columna)
+                        self.lista_errores.append(error)
+                        self.numero_columna += len(lexema) +1
+                        puntero = 0
+                        cadena = self.borrar(cadena)
+                        self.lista_lexema.pop(-1)
+                    else:
+                        lex = Lexema(lexema, self.numero_linea, self.numero_columna)
 
-                    lex = Lexema(lexema, self.numero_linea, self.numero_columna)
-
-                    self.lista_lexema.append(lex)
-                    self.numero_columna += len(lexema) + 1
-                    puntero = 0
+                        self.lista_lexema.append(lex)
+                        self.numero_columna += len(lexema) + 1
+                        puntero = 0
             elif char.isdigit():
                 token, cadena = self.numeros(cadena)
 
@@ -71,7 +90,7 @@ class analizador:
                         self.lista_lexema.append(num)
                         self.numero_columna += len(str(token)) + 1
                         puntero = 0
-            elif char == '[' or char == "]":
+            elif char == '[' or char == ']':
 
                 c = Lexema(char, self.numero_linea, self.numero_columna)
 
@@ -95,9 +114,36 @@ class analizador:
                 cadena = cadena[1:]
                 puntero = 0
                 self.numero_columna += 1
-        
-        for lexema in self.lista_lexema:
-            print(lexema)
+        print("--------------------")
+        for error in self.lista_errores:
+            print("Error encontrado: No.: {}, Lexema: {}, Tipo: {}, Fila: {}, Columna: {}".format(
+                error.numero, error.lexema, error.tipo, error.obtener_Fila(), error.obtener_Columna()))
+        print("--------------------")
+
+        """for lexema in self.lista_lexema:
+            print("Lexema: {}, Fila: {}, Columna: {}".format(
+                lexema.lexema, lexema.obtener_Fila(), lexema.obtener_Columna()))"""
+
+    def borrar(self, cadena):
+        """puntero = ''
+        prueba = ''
+        for char in cadena:
+            puntero += char
+
+            if char == '{' and char:
+                prueba += char
+            
+        return None"""
+        puntero = 0
+        while cadena:
+            char = cadena[puntero]
+            puntero += 1
+
+            if char == '}' and cadena[puntero] == ',':
+                return cadena[puntero:]
+            
+        return None
+
 
     def grupo_lexema(self, cadena):
         lexema = ''
@@ -159,6 +205,5 @@ class analizador:
                 self.lista_instrucciones.append(operacion)
             else :
                 break
-        
-        for instruccion in self.lista_instrucciones:
-            print(instruccion.operar(None))
+
+        return self.lista_instrucciones
