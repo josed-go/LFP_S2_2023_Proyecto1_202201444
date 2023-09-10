@@ -277,3 +277,17 @@ class analizador:
                     node[style=filled, color=" """+self.fondo.lexema+"""", fontcolor=" """+self.fuente.lexema+""""]"""
         
         print(texto)
+
+    def limpiar_listas(self):
+        self.lista_lexema.clear()
+        self.lista_instrucciones.clear()
+        self.lista_errores.clear()
+
+
+        self.numero_linea = 1
+        self.numero_columna = 1
+        # CONFIGURACIONES
+        self.fondo = ''
+        self.texto = ''
+        self.fuente = ''
+        self.forma = ''

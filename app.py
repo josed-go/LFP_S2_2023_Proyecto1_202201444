@@ -94,6 +94,7 @@ class app:
             self.cantidad_lineas = cantidad
 
     def abrir_archivo(self):
+        self.analizador.limpiar_listas()
         self.archivo = filedialog.askopenfilename(filetypes=[("Archivo JSON", "*.json")])
         if self.archivo:
             with open(self.archivo, 'r') as file:
@@ -105,6 +106,7 @@ class app:
     def guardar_archivo(self):
         if self.editor and self.archivo:
             try:
+                self.datos_json = self.editor.get("1.0", tk.END)
                 with open(self.archivo, 'w') as file:
                     file.write(self.editor.get("1.0", tk.END))
                 messagebox.showinfo("Exito!", "El archivo se ha guardado correctamente")
@@ -114,12 +116,14 @@ class app:
     def guardar_como(self):
         if self.editor:
             self.archivo = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Archivo JSON", "*.json")])
+            self.datos_json = self.editor.get("1.0", tk.END)
             if self.archivo:
                 with open(self.archivo, "w") as file:
                     file.write(self.editor.get("1.0", tk.END))
             messagebox.showinfo("Exito!", "El archivo se ha guardado correctamente")
 
     def analizar_datos(self):
+        self.analizador.limpiar_listas()
         self.analizador.instruccion(self.datos_json)
         
         results = self.analizador.recursivo_operar()
@@ -137,6 +141,7 @@ class app:
 
     def generar_reporte(self):
         self.analizador.generar_grafica()
+
 
 raiz = tk.Tk()
 ventana = app(raiz)
