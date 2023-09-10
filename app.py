@@ -129,9 +129,12 @@ class app:
             
             results = self.analizador.recursivo_operar()
             resultados_operaciones = ""
+            num_operacion = 1
             
             for resultado in results:
-                resultados_operaciones += str(resultado.operar(None)) + "\n"
+                if isinstance(resultado.operar(None), int) or isinstance(resultado.operar(None),float) == True:
+                    resultados_operaciones += str(f"Operacion: {num_operacion} --> {resultado.tipo.operar(None)} = {resultado.operar(None)}") + "\n"
+                    num_operacion += 1
 
             messagebox.showinfo("Resultados de operaciones", resultados_operaciones)
         else:
