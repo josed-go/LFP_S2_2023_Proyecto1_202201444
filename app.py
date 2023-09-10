@@ -69,7 +69,7 @@ class app:
         self.errores_B.grid(row=0, column=2, padx=10, pady=10)
         self.errores_B['font'] = self.fuente
 
-        self.reporte_B = tk.Button(self.menu_frame, text="Reporte", padx=20, height=1, bg="#fdf9c4", activebackground="#ffda9e")
+        self.reporte_B = tk.Button(self.menu_frame, text="Reporte", padx=20, height=1, bg="#fdf9c4", activebackground="#ffda9e", command= self.generar_reporte)
         self.reporte_B.grid(row=0, column=3, padx=10, pady=10)
         self.reporte_B['font'] = self.fuente
 
@@ -131,8 +131,11 @@ class app:
         messagebox.showinfo("Resultados de operaciones", resultados_operaciones)
 
     def errores(self):
-        nombre_archivo = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Archivo JSON", "*.json")])
-        self.analizador.generar_errores(nombre_archivo)
+        #nombre_archivo = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Archivo JSON", "*.json")])
+        self.analizador.generar_errores()
+
+    def generar_reporte(self):
+        self.analizador.generar_grafica()
 
 raiz = tk.Tk()
 ventana = app(raiz)

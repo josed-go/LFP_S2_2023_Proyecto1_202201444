@@ -15,6 +15,12 @@ class analizador:
         self.lista_instrucciones = []
         self.lista_errores = []
 
+        # CONFIGURACIONES
+        self.fondo = ''
+        self.texto = ''
+        self.fuente = ''
+        self.forma = ''
+
         self.palabras_reservadas = {
             'OPERACIONES': 'operaciones',
             'Operacion': 'operacion',
@@ -36,14 +42,6 @@ class analizador:
             'FONDO': 'fondo',
             'FORMA': 'forma',
             'TEXTO' : 'Operaciones',
-            'FONDO' : 'azul',
-            'FUENTE' :'blanco',
-            'FORMA': 'circulo',
-            'Textos' : 'textos',
-            'Fondo' : 'fondo',
-            'Fuente' : 'fuente',
-            'Forma' : 'forma',
-            'Circulo' : 'circulo',
             'COMA': ',',
             'PUNTO': '.',
             'PUNTOS': ':',
@@ -81,6 +79,7 @@ class analizador:
                     self.lista_lexema.append(lex)
                     self.numero_columna += len(lexema) + 1
                     puntero = 0
+                    
             elif char.isdigit():
                 token, cadena = self.numeros(cadena)
 
@@ -122,15 +121,17 @@ class analizador:
                 self.numero_columna += 1
                 error = errores((len(self.lista_errores)+1),char, "Error lexico", self.numero_linea, self.numero_columna)
                 self.lista_errores.append(error)
+
+
         print("--------------------")
         for error in self.lista_errores:
             print("Error encontrado: No.: {}, Lexema: {}, Tipo: {}, Fila: {}, Columna: {}".format(
                 error.numero, error.lexema, error.tipo, error.obtener_Fila(), error.obtener_Columna()))
         print("--------------------")
 
-        """for lexema in self.lista_lexema:
+        for lexema in self.lista_lexema:
             print("Lexema: {}, Fila: {}, Columna: {}".format(
-                lexema.lexema, lexema.obtener_Fila(), lexema.obtener_Columna()))"""
+                lexema.lexema, lexema.obtener_Fila(), lexema.obtener_Columna()))
         
     def borrar_anterior(self):
         while self.lista_lexema[-1].lexema != "operacion":
@@ -215,6 +216,20 @@ class analizador:
                 if num2.operar(None) == '[':
                     num2 = self.operaciones()
             
+            if lexema.operar(None) == 'textos':
+                self.texto = self.lista_lexema.pop(0)
+                print(self.texto.lexema)
+        
+            if lexema.operar(None) == 'fondo':
+                self.fondo = self.lista_lexema.pop(0)
+                print(self.fondo.lexema)
+            if lexema.operar(None) == 'fuente':
+                self.fuente = self.lista_lexema.pop(0)
+                print(self.fuente.lexema)
+            if lexema.operar(None) == 'forma':
+                self.forma = self.lista_lexema.pop(0)
+                print(self.forma.lexema)
+            
             if operacion and num1 and num2:
                 return operaciones_arit( num1, num2, operacion, f'Inicio: {operacion.obtener_Fila()}: {operacion.obtener_Columna()}', f'Fin: {num2.obtener_Fila()}:{num2.obtener_Columna()}')
             elif operacion and num1 and operacion.operar(None) == ('seno' or 'coseno' or 'tangente'):
@@ -229,9 +244,14 @@ class analizador:
             else :
                 break
 
+        """for instur in self.lista_instrucciones:
+            print(instur.tipo.operar(None))
+            if instur.dere.operar(None):
+                print(instur.dere.tipo.operar(None))"""
+        
         return self.lista_instrucciones
     
-    def generar_errores(self, nombre_archivo):
+    def generar_errores(self):
         datos = {}
 
         datos["errores"] = []
@@ -247,7 +267,13 @@ class analizador:
             })
         
         try:
-            with open(nombre_archivo, 'w') as file:
+            with open('RESULTADOS_202201444', 'w') as file:
                 json.dump(datos, file, indent = 4)
         except Exception as e:
             print(e)
+
+    def generar_grafica(self):
+        texto = """digraph G {
+                    node[style=filled, color=" """+self.fondo.lexema+"""", fontcolor=" """+self.fuente.lexema+""""]"""
+        
+        print(texto)
