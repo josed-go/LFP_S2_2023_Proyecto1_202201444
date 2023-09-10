@@ -8,7 +8,7 @@ from analizador import analizador
 class app:
     def __init__(self, raiz):
         self.archivo = ""
-        self.datos_json = ""
+        self.datos_json = ''
 
         self.analizador = analizador()
 
@@ -123,16 +123,19 @@ class app:
             messagebox.showinfo("Exito!", "El archivo se ha guardado correctamente")
 
     def analizar_datos(self):
-        self.analizador.limpiar_listas()
-        self.analizador.instruccion(self.datos_json)
-        
-        results = self.analizador.recursivo_operar()
-        resultados_operaciones = ""
-        
-        for resultado in results:
-            resultados_operaciones += str(resultado.operar(None)) + "\n"
+        if self.datos_json != '':
+            self.analizador.limpiar_listas()
+            self.analizador.instruccion(self.datos_json)
+            
+            results = self.analizador.recursivo_operar()
+            resultados_operaciones = ""
+            
+            for resultado in results:
+                resultados_operaciones += str(resultado.operar(None)) + "\n"
 
-        messagebox.showinfo("Resultados de operaciones", resultados_operaciones)
+            messagebox.showinfo("Resultados de operaciones", resultados_operaciones)
+        else:
+            messagebox.showerror("Error", "No hay un archivo cargado")
 
     def errores(self):
         #nombre_archivo = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Archivo JSON", "*.json")])
