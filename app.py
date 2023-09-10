@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import tkinter.font as font
 import json
+import os
 
 from analizador import analizador
 
@@ -10,6 +11,8 @@ class app:
         self.archivo = ""
         self.datos_json = ''
 
+        self.variable_archivo = tk.StringVar()
+        self.variable_archivo.set("")
         self.analizador = analizador()
 
         self.raiz = raiz
@@ -61,6 +64,10 @@ class app:
 
         self.fuente = font.Font(weight="bold")
 
+        self.label = tk.Label(self.menu_frame, textvariable=self.variable_archivo, bg="#FDF9DF")
+        self.label.grid(row=0, column=0, padx=10, pady=10)
+        self.label['font'] = self.fuente
+
         self.analizar_B = tk.Button(self.menu_frame, text="Analizar", padx=20, height=1, bg="#fdf9c4", activebackground="#ffda9e", command = self.analizar_datos)
         self.analizar_B.grid(row=0, column=1, padx=10, pady=10)
         self.analizar_B['font'] = self.fuente
@@ -96,6 +103,7 @@ class app:
     def abrir_archivo(self):
         self.analizador.limpiar_listas()
         self.archivo = filedialog.askopenfilename(filetypes=[("Archivo JSON", "*.json")])
+        self.nombre_archivo(self.archivo)
         if self.archivo:
             with open(self.archivo, 'r') as file:
                 self.datos_json = file.read()
@@ -116,6 +124,7 @@ class app:
     def guardar_como(self):
         if self.editor:
             self.archivo = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Archivo JSON", "*.json")])
+            self.nombre_archivo(self.archivo)
             self.datos_json = self.editor.get("1.0", tk.END)
             if self.archivo:
                 with open(self.archivo, "w") as file:
@@ -147,6 +156,10 @@ class app:
 
     def generar_reporte(self):
         self.analizador.generar_grafica()
+
+    def nombre_archivo(self, nombre):
+        name = os.path.basename(nombre)
+        self.variable_archivo.set(name)
 
 
 raiz = tk.Tk()
