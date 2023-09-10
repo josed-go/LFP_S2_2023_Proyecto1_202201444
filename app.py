@@ -133,6 +133,7 @@ class app:
     def errores(self):
         #nombre_archivo = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Archivo JSON", "*.json")])
         self.analizador.generar_errores()
+        messagebox.showinfo("Exito!", "El archivo se ha generado correctamente")
 
     def generar_reporte(self):
         self.analizador.generar_grafica()

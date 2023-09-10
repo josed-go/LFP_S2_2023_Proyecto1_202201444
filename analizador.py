@@ -267,7 +267,7 @@ class analizador:
             })
         
         try:
-            with open('RESULTADOS_202201444', 'w') as file:
+            with open('RESULTADOS_202201444.json', 'w') as file:
                 json.dump(datos, file, indent = 4)
         except Exception as e:
             print(e)
