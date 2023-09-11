@@ -19,7 +19,7 @@ class operaciones_trigo(Expression):
         elif self.tipo.operar(arbol) == 'tangente':
             return tan(valor_izq)
         else:
-            return 0
+            return None
         
     def obtener_Fila(self):
         return super().obtener_Fila()

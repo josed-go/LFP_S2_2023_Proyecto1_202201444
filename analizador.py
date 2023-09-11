@@ -4,6 +4,7 @@ from lexema import *
 from numero import *
 from errores import *
 import json
+import os
 
 class analizador:
     def __init__(self):
@@ -272,11 +273,56 @@ class analizador:
         except Exception as e:
             print(e)
 
-    def generar_grafica(self):
+    def generar_grafica(self, nombre_archivo):
         texto = """digraph G {
-                    node[style=filled, color=" """+self.fondo.lexema+"""", fontcolor=" """+self.fuente.lexema+""""]"""
+                    label=" """+self.texto.lexema+""""
+                    node[style=filled, color=" """+self.fondo.lexema+"""", fontcolor=" """+self.fuente.lexema+"""", shape="""+self.forma.lexema+"""]"""
+
+        for i in range(len(self.lista_instrucciones)):
+            texto += f"\nsubgraph cluster_{i}"+"{"
+            texto += self.armar_nodos(self.lista_instrucciones[i], i, 0,'')
+            texto += "\n}"
+
+        texto += "\n}"
+
+        """f = open('bb.dot', 'w')
+
+        f.write(texto)
+        f.close()
+        os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+        os.system(f'dot -Tpng bb.dot -o {nombre_archivo}')"""
         
-        print(texto)
+
+    def armar_nodos(self, tipo, num, clave, separador):
+        datos = ""
+
+        if tipo:
+            if type(tipo) == numero:
+                
+                datos += f'nodo{num}{clave}{separador}[label="{tipo.operar(None)}"];\n'
+
+
+            if type(tipo) == operaciones_arit:
+                datos += f'nodo{num}{clave}{separador}[label="{tipo.tipo.lexema}\\n{tipo.operar(None)}"];\n'
+
+                datos += self.armar_nodos(tipo.izq ,num, clave+1, separador+"_izq")
+
+                datos += f'nodo{num}{clave}{separador} -> nodo{num}{clave+1}{separador}_izq;\n'
+
+                datos += self.armar_nodos(tipo.dere,num, clave+1, separador+"_dere")
+
+                datos += f'nodo{num}{clave}{separador} -> nodo{num}{clave+1}{separador}_dere;\n'
+            
+            if type(tipo) == operaciones_trigo:
+                
+                datos += f'nodo{num}{clave}{separador}[label="{tipo.tipo.lexema}\\n{tipo.operar(None)}"];\n'
+
+                datos += self.armar_nodos(tipo.izq,num, clave+1, separador+"_tri")
+
+                datos += f'nodo{num}{clave}{separador} -> nodo{num}{clave+1}{separador}_tri;\n'
+
+
+        return datos
 
     def limpiar_listas(self):
         self.lista_lexema.clear()
