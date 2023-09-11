@@ -16,21 +16,21 @@ class operaciones_arit(Expression):
             valor_dere = self.dere.operar(arbol)
 
         if self.tipo.operar(arbol) == 'suma':
-            return valor_izq + valor_dere 
+            return round(valor_izq + valor_dere,2) 
         elif self.tipo.operar(arbol) == 'resta':
-            return valor_izq - valor_dere 
+            return round(valor_izq - valor_dere,2) 
         elif self.tipo.operar(arbol) == 'multiplicacion':
-            return valor_izq * valor_dere 
+            return round(valor_izq * valor_dere,2) 
         elif self.tipo.operar(arbol) == 'division':
-            return valor_izq / valor_dere 
+            return round(valor_izq / valor_dere,2) 
         elif self.tipo.operar(arbol) == 'mod':
-            return valor_izq % valor_dere 
+            return round(valor_izq % valor_dere,2) 
         elif self.tipo.operar(arbol) == 'potencia':
-            return valor_izq ** valor_dere 
+            return round(valor_izq ** valor_dere,2) 
         elif self.tipo.operar(arbol) == 'raiz':
-            return valor_izq ** (1/valor_dere)
+            return round(valor_izq ** (1/valor_dere),2)
         elif self.tipo.operar(arbol) == 'inverso':
-            return 1/valor_izq
+            return round(1/valor_izq,2)
         else:
             return None
         
