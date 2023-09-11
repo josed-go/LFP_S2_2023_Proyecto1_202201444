@@ -155,8 +155,9 @@ class app:
         messagebox.showinfo("Exito!", "El archivo se ha generado correctamente")
 
     def generar_reporte(self):
-        nombre_archivo = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG", "*.png")])
-        self.analizador.generar_grafica(nombre_archivo)
+        #nombre_archivo = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png")])
+        self.analizador.generar_grafica()
+        messagebox.showinfo("Exito!", "Reporte generado correctamente")
 
     def nombre_archivo(self, nombre):
         name = os.path.basename(nombre)

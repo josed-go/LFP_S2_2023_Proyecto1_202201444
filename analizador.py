@@ -124,7 +124,7 @@ class analizador:
                 self.lista_errores.append(error)
 
 
-        print("--------------------")
+        """print("--------------------")
         for error in self.lista_errores:
             print("Error encontrado: No.: {}, Lexema: {}, Tipo: {}, Fila: {}, Columna: {}".format(
                 error.numero, error.lexema, error.tipo, error.obtener_Fila(), error.obtener_Columna()))
@@ -132,7 +132,7 @@ class analizador:
 
         for lexema in self.lista_lexema:
             print("Lexema: {}, Fila: {}, Columna: {}".format(
-                lexema.lexema, lexema.obtener_Fila(), lexema.obtener_Columna()))
+                lexema.lexema, lexema.obtener_Fila(), lexema.obtener_Columna()))"""
         
     def borrar_anterior(self):
         while self.lista_lexema[-1].lexema != "operacion":
@@ -273,7 +273,7 @@ class analizador:
         except Exception as e:
             print(e)
 
-    def generar_grafica(self, nombre_archivo):
+    def generar_grafica(self):
         texto = """digraph G {
                     label=" """+self.texto.lexema+""""
                     node[style=filled, color=" """+self.fondo.lexema+"""", fontcolor=" """+self.fuente.lexema+"""", shape="""+self.forma.lexema+"""]"""
@@ -284,13 +284,12 @@ class analizador:
             texto += "\n}"
 
         texto += "\n}"
-
-        """f = open('bb.dot', 'w')
+        f = open('bb.dot', 'w')
 
         f.write(texto)
         f.close()
         os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
-        os.system(f'dot -Tpng bb.dot -o {nombre_archivo}')"""
+        os.system(f'dot -Tpng bb.dot -o REPORTE_202201444.png')
         
 
     def armar_nodos(self, tipo, num, clave, separador):
