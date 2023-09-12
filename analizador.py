@@ -217,7 +217,7 @@ class analizador:
                 if num2.operar(None) == '[':
                     num2 = self.operaciones()
             
-            if lexema.operar(None) == 'textos':
+            if lexema.operar(None) == 'texto':
                 self.texto = self.lista_lexema.pop(0)
                 print(self.texto.lexema)
         
