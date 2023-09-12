@@ -219,17 +219,17 @@ class analizador:
             
             if lexema.operar(None) == 'texto':
                 self.texto = self.lista_lexema.pop(0)
-                print(self.texto.lexema)
+                #print(self.texto.lexema)
         
             if lexema.operar(None) == 'fondo':
                 self.fondo = self.lista_lexema.pop(0)
-                print(self.fondo.lexema)
+                #print(self.fondo.lexema)
             if lexema.operar(None) == 'fuente':
                 self.fuente = self.lista_lexema.pop(0)
-                print(self.fuente.lexema)
+                #print(self.fuente.lexema)
             if lexema.operar(None) == 'forma':
                 self.forma = self.lista_lexema.pop(0)
-                print(self.forma.lexema)
+                #print(self.forma.lexema)
             
             if operacion and num1 and num2:
                 return operaciones_arit( num1, num2, operacion, f'Inicio: {operacion.obtener_Fila()}: {operacion.obtener_Columna()}', f'Fin: {num2.obtener_Fila()}:{num2.obtener_Columna()}')

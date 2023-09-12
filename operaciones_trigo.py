@@ -12,11 +12,11 @@ class operaciones_trigo(Expression):
         if self.izq != None:
             valor_izq = self.izq.operar(arbol)
         
-        if self.tipo.operar(arbol) == 'seno':
+        if self.tipo.operar(arbol).lower() == 'seno':
             return round(sin(valor_izq),2)
-        elif self.tipo.operar(arbol) == 'coseno':
+        elif self.tipo.operar(arbol).lower() == 'coseno':
             return round(cos(valor_izq),2)
-        elif self.tipo.operar(arbol) == 'tangente':
+        elif self.tipo.operar(arbol).lower() == 'tangente':
             return round(tan(valor_izq),2)
         else:
             return None
