@@ -1,4 +1,4 @@
-# *Manual tecnico*
+# *Manual tecnico Proyecto 1*
 
 * *José David Góngora Olmedo*
 * *202201444*
