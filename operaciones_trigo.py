@@ -1,3 +1,4 @@
+import math
 from abstraccion import Expression
 from math import *
 
@@ -13,11 +14,13 @@ class operaciones_trigo(Expression):
             valor_izq = self.izq.operar(arbol)
         
         if self.tipo.operar(arbol).lower() == 'seno':
-            return round(sin(valor_izq),2)
+            return round(sin(radians(valor_izq)),2)
         elif self.tipo.operar(arbol).lower() == 'coseno':
-            return round(cos(valor_izq),2)
+            return round(cos(radians(valor_izq)),2)
         elif self.tipo.operar(arbol).lower() == 'tangente':
-            return round(tan(valor_izq),2)
+            return round(tan(radians(valor_izq)),2)
+        elif self.tipo.operar(arbol).lower() == 'inverso':
+            return round(1/valor_izq,2)
         else:
             return None
         

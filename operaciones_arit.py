@@ -29,8 +29,6 @@ class operaciones_arit(Expression):
             return round(valor_izq ** valor_dere,2) 
         elif self.tipo.operar(arbol).lower() == 'raiz':
             return round(valor_izq ** (1/valor_dere),2)
-        elif self.tipo.operar(arbol).lower() == 'inverso':
-            return round(1/valor_izq,2)
         else:
             return None
         

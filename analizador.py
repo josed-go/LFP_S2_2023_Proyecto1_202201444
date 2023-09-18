@@ -185,13 +185,18 @@ class analizador:
         numero = ''
         puntero = ''
         es_decimal = False
+        es_negativo = False
         for char in cadena:
             puntero += char
             if char == '.':
                 es_decimal = True
+            if char == '-':
+                es_negativo = True
             if char == '\"' or char == ' ' or char == '\n' or char == '\t' or char == ',':
                 if es_decimal:
                     return float(numero), cadena[len(puntero)-1:]
+                if es_negativo:
+                    return int(numero), cadena[len(puntero)-1:]
                 else:
                     return int(numero), cadena[len(puntero)-1:]
             else:
@@ -233,7 +238,7 @@ class analizador:
             
             if operacion and num1 and num2:
                 return operaciones_arit( num1, num2, operacion, f'Inicio: {operacion.obtener_Fila()}: {operacion.obtener_Columna()}', f'Fin: {num2.obtener_Fila()}:{num2.obtener_Columna()}')
-            elif operacion and num1 and operacion.operar(None) == ('seno' or 'coseno' or 'tangente'):
+            elif operacion and num1 and (operacion.operar(None).lower() == 'seno' or operacion.operar(None).lower() == 'coseno' or operacion.operar(None).lower() == 'tangente' or operacion.operar(None).lower() == 'inverso'):
                 return operaciones_trigo(num1, operacion, f'Inicio: {operacion.obtener_Fila()}: {operacion.obtener_Columna()}', f'Fin: {num1.obtener_Fila()}:{num1.obtener_Columna()}')
         return None
     
@@ -245,10 +250,8 @@ class analizador:
             else :
                 break
 
-        """for instur in self.lista_instrucciones:
-            print(instur.tipo.operar(None))
-            if instur.dere.operar(None):
-                print(instur.dere.tipo.operar(None))"""
+        # for instur in self.lista_instrucciones:
+        #     print(instur.tipo.operar(None))
         
         return self.lista_instrucciones
     
